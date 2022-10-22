@@ -109,3 +109,8 @@ echo $line
 
 echo "Verifying ingress"
 kubectl get ingress -l app=backend
+
+echo $line
+
+echo "See location for ingress"
+kubectl describe ingress backend-ingress
