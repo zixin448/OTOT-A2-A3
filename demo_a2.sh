@@ -73,13 +73,13 @@ kubectl get deployment.apps/backend
 
 echo $line
 
-echo "Verifying labelling of ingress-ready"
-kubectl get nodes -L ingress-ready
+echo "Verifying individual containers"
+kubectl get po -l app=backend --watch
 
 echo $line
 
-echo "Verifying individual containers"
-kubectl get po -lapp=backend
+echo "Verifying labelling of ingress-ready"
+kubectl get nodes -L ingress-ready --watch
 
 echo $line
 
@@ -94,9 +94,18 @@ kubectl -n ingress-nginx get deploy
 echo $line
 
 echo "Verifying Service"
-kubectl get svc
+kubectl get svc -l app=backend
+
+echo $line
+
+echo "Describing backend-svc"
+kubectl describe svc backend-svc
+
+echo $line
+
+kubectl port-forward service/backend-svc 8080:8080
 
 echo $line
 
 echo "Verifying ingress"
-kubectl get ingress
+kubectl get ingress -l app=backend

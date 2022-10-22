@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: backend
+  name: backend-hpa
   namespace: default
 spec:
   metrics:
