@@ -39,10 +39,7 @@ echo "Verifying..."
 
 echo $line
 # ======================
-
-echo "Verifying HPA"
 kubectl get po
-kubectl describe HPA
 
 echo $line
 
@@ -53,3 +50,12 @@ echo $line
 
 echo "Verifying backend-zone-aware"
 kubectl get po -lapp=backend-zone-aware -owide --sort-by='.spec.nodeName'
+
+echo $line
+
+echo "See current hpa"
+kubectl describe hpa
+
+echo $line
+
+echo "Run `kubectl describe hpa` while refreshing page to verify scale up"
