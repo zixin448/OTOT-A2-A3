@@ -32,10 +32,15 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 echo $line
 
+echo "Waiting for Ingress controller Deployment"
+kubectl -n ingress-nginx rollout status deploy
+
 echo "Apply backend-service"
 kubectl apply -f k8s/manifests/backend-service.yaml
 
 echo $line
+
+sleep 5
 
 echo "Applying backend-ingress"
 kubectl apply -f k8s/manifests/backend-ingress.yaml
@@ -73,18 +78,17 @@ kubectl get deployment.apps/backend
 
 echo $line
 
+sleep 5
+
 echo "Verifying individual containers"
-kubectl get po -l app=backend --watch
+kubectl get po -l app=backend
+
 
 echo $line
 
 echo "Verifying labelling of ingress-ready"
-kubectl get nodes -L ingress-ready --watch
+kubectl get nodes -L ingress-ready
 
-echo $line
-
-echo "Waiting for Ingress controller Deployment"
-kubectl -n ingress-nginx rollout status deploy --watch
 
 echo $line
 
@@ -103,14 +107,18 @@ kubectl describe svc backend-svc
 
 echo $line
 
-kubectl port-forward service/backend-svc 8080:8080
-
-echo $line
-
 echo "Verifying ingress"
 kubectl get ingress -l app=backend
 
 echo $line
 
-echo "See location for ingress"
+echo "Ctrl-C to exit after visiting localhost:8080"
+
+kubectl port-forward service/backend-svc 8080:8080
+
+echo $line
+
+echo "See updated location for ingress is localhost"
 kubectl describe ingress backend-ingress
+
+echo $line
